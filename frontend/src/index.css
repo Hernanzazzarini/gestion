@@ -1,0 +1,182 @@
+/* =========================================
+   ESTILOS PROFESIONALES - SISTEMA EMPRESARIAL
+   ========================================= */
+
+/* Colores principales */
+:root {
+  --primary: #0066ff;
+  --primary-dark: #0044aa;
+  --background: #f4f7fc;
+  --text: #1a1a1a;
+  --gray: #6b7280;
+  --white: #ffffff;
+
+  font-family: "Inter", system-ui, Arial, sans-serif;
+  color: var(--text);
+  background-color: var(--background);
+}
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Ajustes generales */
+html, body, #root {
+  width: 100%;
+  min-height: 100%;
+  background: var(--background);
+}
+
+/* Links */
+a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+a:hover {
+  color: var(--primary-dark);
+}
+
+/* Hero Homepage */
+.hero {
+  width: 100%;
+  padding: 80px 20px;
+  text-align: center;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+}
+
+.hero h1 {
+  font-size: 48px;
+  font-weight: 900;
+}
+
+.hero p {
+  font-size: 20px;
+  opacity: 0.9;
+  margin-top: 10px;
+}
+
+/* Cards */
+.cards-container {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  gap: 25px;
+}
+
+.card {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+  transition: 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Footer */
+footer {
+  margin-top: 60px;
+  background: var(--white);
+  padding: 25px;
+  text-align: center;
+  color: var(--gray);
+  font-size: 14px;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* Responsive texto */
+body {
+  font-size: clamp(15px, 1.6vw, 18px);
+}
+
+/* Contenedor general */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Navbar personalizada (ligera) */
+.navbar-brand {
+  letter-spacing: 0.5px;
+}
+
+.nav-link {
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.nav-link:hover {
+  color: #0d6efd;
+  transform: translateY(-1px);
+}
+/* ======================
+   FOOTER PROFESIONAL
+   ====================== */
+
+   .footer-section {
+    background: var(--white);
+    padding: 50px 0;
+    margin-top: 60px;
+    border-top: 1px solid #e5e7eb;
+    color: var(--gray);
+  }
+  
+  .footer-logo {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary);
+  }
+  
+  .footer-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: var(--text);
+    font-weight: 700;
+  }
+  
+  .footer-text {
+    font-size: 14px;
+    color: var(--gray);
+  }
+  
+  .footer-links {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-links li {
+    margin-bottom: 8px;
+  }
+  
+  .footer-links a {
+    color: var(--gray);
+    text-decoration: none;
+    transition: 0.2s ease;
+  }
+  
+  .footer-links a:hover {
+    color: var(--primary);
+    padding-left: 5px;
+  }
+  
+  .footer-divider {
+    margin: 30px 0;
+    border-color: #e5e7eb;
+  }
+  
+  .footer-bottom {
+    text-align: center;
+    font-size: 14px;
+    color: var(--gray);
+  }
+  
