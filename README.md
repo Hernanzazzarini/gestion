@@ -1,1 +1,1 @@
-# Sistema de Gestión
+# gestion
