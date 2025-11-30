@@ -11,6 +11,8 @@ class Capacitacion(models.Model):
     )
     nota = models.DecimalField(max_digits=5, decimal_places=2)
 
+    quien_realizo = models.CharField(max_length=150)
+    
     def __str__(self):
         return f"{self.nombre_capacitacion} - {self.operario}"
 
