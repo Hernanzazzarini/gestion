@@ -25,9 +25,9 @@ export default function Footer() {
   
             {/* Contacto */}
             <div className="col-md-4">
-              <h5 className="footer-title">Contacto</h5>
-              <p className="footer-text">📞 +54 11 5555-5555</p>
-              <p className="footer-text">📧 info@gestiondocs.com</p>
+              <h5 className="footer-title">Contacto del desarrollador</h5>
+              <p className="footer-text">📞 3585181514</p>
+              <p className="footer-text">📧 Dev.ZazzariniH</p>
             </div>
   
           </div>
