@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import {
   obtenerReclamos,
   crearReclamo,
@@ -35,6 +36,7 @@ export default function Reclamos() {
       setReclamos(data);
     } catch (e) {
       console.error("Error cargando reclamos:", e);
+      Swal.fire("Error", "No se pudieron cargar los reclamos", "error");
     }
   }
 
@@ -42,6 +44,7 @@ export default function Reclamos() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
+  // ✔ FORMULARIO - GUARDAR RECLAMO
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -51,7 +54,14 @@ export default function Reclamos() {
 
     try {
       await crearReclamo(fd);
-      alert("Reclamo creado con éxito");
+
+      Swal.fire({
+        title: "¡Reclamo guardado!",
+        text: "El reclamo fue registrado correctamente",
+        icon: "success",
+        confirmButtonColor: "#198754",
+      });
+
       cargarReclamos();
 
       // limpiar form
@@ -69,45 +79,58 @@ export default function Reclamos() {
         estado: "",
         año_lote_reclamado: "",
       });
-      setArchivo(null);
 
-      // limpiar input file visualmente
+      setArchivo(null);
       document.getElementById("inputArchivo").value = "";
 
     } catch (e) {
       console.error("ERROR:", e);
-      alert("Error creando reclamo");
+      Swal.fire("Error", "No se pudo guardar el reclamo", "error");
     }
   }
 
+  // ✔ ELIMINAR
   async function eliminar(id) {
-    if (!confirm("¿Eliminar reclamo?")) return;
+    const confirm = await Swal.fire({
+      title: "¿Eliminar reclamo?",
+      text: "Esta acción no se puede deshacer",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (!confirm.isConfirmed) return;
 
     await borrarReclamo(id);
     cargarReclamos();
+
+    Swal.fire("Eliminado", "El reclamo fue eliminado", "success");
   }
 
-  // 🔽 FUNCIÓN REAL DE DESCARGA (100% FUNCIONAL)
+  // ✔ DESCARGAR ARCHIVO (FUNCIONAL)
   async function descargarArchivo(ruta) {
     try {
       const url = `http://127.0.0.1:8000${ruta}`;
-      const response = await fetch(url);
 
+      const response = await fetch(url);
       if (!response.ok) throw new Error("No se pudo descargar");
 
       const blob = await response.blob();
       const blobURL = URL.createObjectURL(blob);
 
-      const link = document.createElement("a");
-      link.href = blobURL;
-      link.download = ruta.split("/").pop(); // nombre original del archivo
-      link.click();
+      const a = document.createElement("a");
+      a.href = blobURL;
+      a.download = ruta.split("/").pop();
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
 
       URL.revokeObjectURL(blobURL);
 
     } catch (error) {
       console.error("Error al descargar:", error);
-      alert("No se pudo descargar el archivo");
+      Swal.fire("Error", "No se pudo descargar el archivo", "error");
     }
   }
 
@@ -118,14 +141,12 @@ export default function Reclamos() {
       {/* FORMULARIO */}
       <form onSubmit={handleSubmit} className="row g-3 mt-3">
 
-        {/* FECHA */}
         <div className="col-md-4">
           <label>Fecha</label>
           <input type="date" name="fecha" className="form-control"
             value={form.fecha} onChange={handleChange} required />
         </div>
 
-        {/* TIPO */}
         <div className="col-md-4">
           <label>Tipo</label>
           <select name="tipo" className="form-control"
@@ -136,21 +157,18 @@ export default function Reclamos() {
           </select>
         </div>
 
-        {/* CÓDIGO */}
         <div className="col-md-4">
           <label>Código</label>
           <input type="text" name="codigo" className="form-control"
             value={form.codigo} onChange={handleChange} />
         </div>
 
-        {/* CLIENTE */}
         <div className="col-md-4">
           <label>Cliente</label>
           <input type="text" name="cliente" className="form-control"
             value={form.cliente} onChange={handleChange} />
         </div>
 
-        {/* DESTINATARIO */}
         <div className="col-md-4">
           <label>Destinatario</label>
           <select name="destinatario" className="form-control"
@@ -165,35 +183,30 @@ export default function Reclamos() {
           </select>
         </div>
 
-        {/* LOTE */}
         <div className="col-md-4">
           <label>Lote reclamado</label>
           <input type="text" name="lote_reclamado" className="form-control"
             value={form.lote_reclamado} onChange={handleChange} />
         </div>
 
-        {/* AÑO */}
         <div className="col-md-4">
           <label>Año lote reclamado</label>
           <input type="number" name="año_lote_reclamado" className="form-control"
             value={form.año_lote_reclamado} onChange={handleChange} />
         </div>
 
-        {/* MOTIVO */}
         <div className="col-md-4">
           <label>Motivo</label>
           <input type="text" name="motivo" className="form-control"
             value={form.motivo} onChange={handleChange} />
         </div>
 
-        {/* DESCRIPCIÓN */}
         <div className="col-md-12">
           <label>Descripción reclamo</label>
           <textarea name="descripcion_reclamo" className="form-control"
             rows="2" value={form.descripcion_reclamo} onChange={handleChange} />
         </div>
 
-        {/* GRAVEDAD */}
         <div className="col-md-4">
           <label>Gravedad</label>
           <select name="gravedad" className="form-control"
@@ -205,7 +218,6 @@ export default function Reclamos() {
           </select>
         </div>
 
-        {/* ESTADO */}
         <div className="col-md-4">
           <label>Estado</label>
           <select name="estado" className="form-control"
@@ -216,14 +228,12 @@ export default function Reclamos() {
           </select>
         </div>
 
-        {/* COMENTARIOS */}
         <div className="col-md-4">
           <label>Comentarios</label>
           <input type="text" name="comentarios" className="form-control"
             value={form.comentarios} onChange={handleChange} />
         </div>
 
-        {/* ARCHIVO */}
         <div className="col-md-12">
           <label>Archivo adjunto</label>
           <input
@@ -243,7 +253,7 @@ export default function Reclamos() {
 
       <hr />
 
-      {/* TABLA COMPLETA DE RECLAMOS */}
+      {/* TABLA */}
       <h3>Listado de Reclamos</h3>
 
       <table className="table table-bordered table-striped mt-3">
@@ -283,7 +293,6 @@ export default function Reclamos() {
               <td>{r.gravedad}</td>
               <td>{r.comentarios}</td>
 
-              {/* CAMBIAR ESTADO */}
               <td>
                 <select
                   value={r.estado}
@@ -298,7 +307,6 @@ export default function Reclamos() {
                 </select>
               </td>
 
-              {/* DESCARGA ARCHIVO */}
               <td>
                 {r.archivo_adjunto ? (
                   <button
@@ -312,7 +320,6 @@ export default function Reclamos() {
                 )}
               </td>
 
-              {/* ELIMINAR */}
               <td>
                 <button
                   className="btn btn-danger btn-sm"
@@ -327,5 +334,6 @@ export default function Reclamos() {
         </tbody>
       </table>
     </div>
+    
   );
 }
