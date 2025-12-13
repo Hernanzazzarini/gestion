@@ -1,67 +1,44 @@
-import heroImg from "../assets/hero.jpg";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
-    <>
-      {/* HERO */}
-      <header className="bg-light pt-5 pb-5">
-        <div className="container-fluid">
-          <div className="row align-items-center flex-column-reverse flex-lg-row">
-            
-            {/* Texto */}
-            <div className="col-12 col-lg-6 text-center text-lg-start mt-4 mt-lg-0">
-              <h1 className="display-5 fw-bold">
-                Sistema de Gestion de documentos.
-              </h1>
-              <p className="lead mt-3">
-                Administra de forma sencilla y eficiente todos los documentos y capacitaciones de tu empresa.
+    <div className="container mt-5">
+      <h1 className="text-center mb-5">Bienvenido al Sistema</h1>
+
+      <div className="row justify-content-center">
+
+        {/* Card para Gestionar Capacitaciones */}
+        <div className="col-md-4 mb-4">
+          <div className="card shadow-sm text-center h-100">
+            <div className="card-body d-flex flex-column justify-content-center">
+              <h5 className="card-title mb-3">Gestionar Capacitaciones</h5>
+              <p className="card-text">
+                Accede al módulo de capacitaciones para ver, agregar o editar información.
               </p>
-              <a href="/capacitaciones" className="btn btn-primary btn-lg mt-3">
-                Gestionar Capacitaciones
-              </a>
+              <Link to="/capacitaciones" className="btn btn-primary mt-auto">
+                Ir a Capacitaciones
+              </Link>
             </div>
-
-            {/* Imagen */}
-            <div className="col-12 col-lg-6 text-center p-0">
-              <img 
-                src={heroImg} 
-                alt="Gestión" 
-                className="img-fluid w-100"
-                style={{ maxHeight: "420px", objectFit: "cover" }}
-              />
-            </div>
-
           </div>
         </div>
-      </header>
 
-      {/* TARJETAS */}
-      <section className="container-fluid mt-5 mb-5">
-        <div className="row justify-content-center gap-3">
-          
-          <div className="col-12 col-md-3">
-            <div className="card shadow border-0 text-center p-3">
-              <h5 className="fw-bold">✔ Fácil de usar</h5>
-              <p>Interfaz limpia para que todo tu equipo trabaje sin dificultades.</p>
+        {/* Card para Reclamos */}
+        <div className="col-md-4 mb-4">
+          <div className="card shadow-sm text-center h-100">
+            <div className="card-body d-flex flex-column justify-content-center">
+              <h5 className="card-title mb-3">Reclamos</h5>
+              <p className="card-text">
+                Accede al módulo de reclamos para ver, registrar y gestionar reclamos.
+              </p>
+              <Link to="/reclamos" className="btn btn-warning mt-auto">
+                Ir a Reclamos
+              </Link>
             </div>
           </div>
-
-          <div className="col-12 col-md-3">
-            <div className="card shadow border-0 text-center p-3">
-              <h5 className="fw-bold">🔒 Seguro</h5>
-              <p>Lleve el seguimiento de todas las capacitaciones.</p>
-            </div>
-          </div>
-
-          <div className="col-12 col-md-3">
-            <div className="card shadow border-0 text-center p-3">
-              <h5 className="fw-bold">📊 Reportes</h5>
-              <p>Visualización clara del estado de las capacitaciones.</p>
-            </div>
-          </div>
-
         </div>
-      </section>
-    </>
+
+      </div>
+    </div>
   );
 }
+

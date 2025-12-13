@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import {
   obtenerReclamos,
@@ -8,7 +9,16 @@ import {
 } from "../services/reclamosService";
 
 export default function Reclamos() {
+  const navigate = useNavigate();
+
   const [reclamos, setReclamos] = useState([]);
+  const [filtro, setFiltro] = useState({
+    cliente: "",
+    destinatario: "",
+    motivo: "",
+    año_lote_reclamado: "",
+  });
+
   const [form, setForm] = useState({
     fecha: "",
     tipo: "",
@@ -35,7 +45,6 @@ export default function Reclamos() {
       const data = await obtenerReclamos();
       setReclamos(data);
     } catch (e) {
-      console.error("Error cargando reclamos:", e);
       Swal.fire("Error", "No se pudieron cargar los reclamos", "error");
     }
   }
@@ -44,7 +53,11 @@ export default function Reclamos() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  // ✔ FORMULARIO - GUARDAR RECLAMO
+  function handleFiltroChange(e) {
+    setFiltro({ ...filtro, [e.target.name]: e.target.value });
+  }
+
+  // GUARDAR RECLAMO
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -64,7 +77,6 @@ export default function Reclamos() {
 
       cargarReclamos();
 
-      // limpiar form
       setForm({
         fecha: "",
         tipo: "",
@@ -82,14 +94,12 @@ export default function Reclamos() {
 
       setArchivo(null);
       document.getElementById("inputArchivo").value = "";
-
     } catch (e) {
-      console.error("ERROR:", e);
       Swal.fire("Error", "No se pudo guardar el reclamo", "error");
     }
   }
 
-  // ✔ ELIMINAR
+  // ELIMINAR
   async function eliminar(id) {
     const confirm = await Swal.fire({
       title: "¿Eliminar reclamo?",
@@ -108,13 +118,12 @@ export default function Reclamos() {
     Swal.fire("Eliminado", "El reclamo fue eliminado", "success");
   }
 
-  // ✔ DESCARGAR ARCHIVO (FUNCIONAL)
+  // DESCARGAR ARCHIVO
   async function descargarArchivo(ruta) {
     try {
       const url = `http://127.0.0.1:8000${ruta}`;
-
       const response = await fetch(url);
-      if (!response.ok) throw new Error("No se pudo descargar");
+      if (!response.ok) throw new Error();
 
       const blob = await response.blob();
       const blobURL = URL.createObjectURL(blob);
@@ -127,20 +136,36 @@ export default function Reclamos() {
       a.remove();
 
       URL.revokeObjectURL(blobURL);
-
-    } catch (error) {
-      console.error("Error al descargar:", error);
+    } catch {
       Swal.fire("Error", "No se pudo descargar el archivo", "error");
     }
   }
 
+  // Aplicar filtros
+  const reclamosFiltrados = reclamos.filter((r) => {
+    return (
+      (filtro.cliente === "" || r.cliente?.toLowerCase().includes(filtro.cliente.toLowerCase())) &&
+      (filtro.destinatario === "" || r.destinatario === filtro.destinatario) &&
+      (filtro.motivo === "" || r.motivo?.toLowerCase().includes(filtro.motivo.toLowerCase())) &&
+      (filtro.año_lote_reclamado === "" || r.año_lote_reclamado?.toString() === filtro.año_lote_reclamado)
+    );
+  });
+
   return (
     <div className="container mt-4">
-      <h2>Gestión de Reclamos</h2>
+      <h2 className="mb-3">Gestión de Reclamos</h2>
+
+      {/* BOTÓN REPORTE */}
+      <button
+        className="btn btn-primary mb-4"
+        onClick={() => navigate("/reporte-reclamos")}
+      >
+        📊 Ver Reportes de Reclamos
+      </button>
 
       {/* FORMULARIO */}
-      <form onSubmit={handleSubmit} className="row g-3 mt-3">
-
+      <form onSubmit={handleSubmit} className="row g-3">
+        {/* ======== FORMULARIO ORIGINAL COMPLETO ======== */}
         <div className="col-md-4">
           <label>Fecha</label>
           <input type="date" name="fecha" className="form-control"
@@ -251,48 +276,92 @@ export default function Reclamos() {
         </div>
       </form>
 
-      <hr />
+      {/* FILTROS */}
+      <h5>Filtrar Reclamos</h5>
+      <div className="row mb-3 g-3">
+        <div className="col-md-3">
+          <input
+            type="text"
+            placeholder="Cliente"
+            name="cliente"
+            value={filtro.cliente}
+            onChange={handleFiltroChange}
+            className="form-control"
+          />
+        </div>
+        <div className="col-md-3">
+          <select
+            name="destinatario"
+            value={filtro.destinatario}
+            onChange={handleFiltroChange}
+            className="form-control"
+          >
+            <option value="">Todos los destinatarios</option>
+            <option value="BLANCHED">Blanched</option>
+            <option value="SUPER_CLEAN">Super Clean</option>
+            <option value="LOGISTICA">Logística</option>
+            <option value="CRUDO">Crudo</option>
+            <option value="TOSTADO">Tostado</option>
+            <option value="PASTA">Pasta</option>
+          </select>
+        </div>
+        <div className="col-md-3">
+          <input
+            type="text"
+            placeholder="Motivo"
+            name="motivo"
+            value={filtro.motivo}
+            onChange={handleFiltroChange}
+            className="form-control"
+          />
+        </div>
+        <div className="col-md-3">
+          <input
+            type="number"
+            placeholder="Año lote reclamado"
+            name="año_lote_reclamado"
+            value={filtro.año_lote_reclamado}
+            onChange={handleFiltroChange}
+            className="form-control"
+          />
+        </div>
+      </div>
 
       {/* TABLA */}
       <h3>Listado de Reclamos</h3>
-
       <table className="table table-bordered table-striped mt-3">
         <thead>
           <tr>
             <th>ID</th>
             <th>Fecha</th>
-            <th>Tipo</th>
             <th>Código</th>
             <th>Cliente</th>
             <th>Destinatario</th>
-            <th>Lote</th>
-            <th>Año</th>
+            <th>Lote reclamado</th>
             <th>Motivo</th>
             <th>Descripción</th>
-            <th>Gravedad</th>
             <th>Comentarios</th>
+            <th>Gravedad</th>
+            <th>Año Lote</th>
             <th>Estado</th>
             <th>Archivo</th>
             <th>Acciones</th>
           </tr>
         </thead>
-
         <tbody>
-          {reclamos.map((r) => (
+          {reclamosFiltrados.map((r) => (
             <tr key={r.id}>
               <td>{r.id}</td>
               <td>{r.fecha}</td>
-              <td>{r.tipo}</td>
               <td>{r.codigo}</td>
               <td>{r.cliente}</td>
               <td>{r.destinatario}</td>
               <td>{r.lote_reclamado}</td>
-              <td>{r.año_lote_reclamado}</td>
               <td>{r.motivo}</td>
               <td>{r.descripcion_reclamo}</td>
-              <td>{r.gravedad}</td>
               <td>{r.comentarios}</td>
-
+              <td>{r.gravedad}</td>
+              <td>{r.año_lote_reclamado}</td>
               <td>
                 <select
                   value={r.estado}
@@ -306,7 +375,6 @@ export default function Reclamos() {
                   <option value="CERRADO">CERRADO</option>
                 </select>
               </td>
-
               <td>
                 {r.archivo_adjunto ? (
                   <button
@@ -319,7 +387,6 @@ export default function Reclamos() {
                   "Sin archivo"
                 )}
               </td>
-
               <td>
                 <button
                   className="btn btn-danger btn-sm"
@@ -328,12 +395,10 @@ export default function Reclamos() {
                   Eliminar
                 </button>
               </td>
-
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-    
   );
 }
