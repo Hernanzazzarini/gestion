@@ -2,15 +2,13 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
 
-        {/* LOGO / Marca */}
-        <Link className="navbar-brand fw-bold text-primary fs-4" to="/">
-          SGD
+        <Link className="navbar-brand" to="/">
+          Sistema de Gestión
         </Link>
 
-        {/* Botón hamburguesa */}
         <button
           className="navbar-toggler"
           type="button"
@@ -20,25 +18,29 @@ export default function Navbar() {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        {/* Items */}
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto gap-2">
+          <ul className="navbar-nav ms-auto">
 
             <li className="nav-item">
-              <Link className="nav-link fw-semibold" to="/">
+              <Link className="nav-link" to="/">
                 Home
               </Link>
             </li>
 
             <li className="nav-item">
-              <Link className="nav-link fw-semibold" to="/capacitaciones">
+              <Link className="nav-link" to="/capacitaciones">
                 Capacitaciones
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link className="nav-link" to="/reclamos">
+                Reclamos
               </Link>
             </li>
 
           </ul>
         </div>
-
       </div>
     </nav>
   );

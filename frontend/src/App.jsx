@@ -4,6 +4,8 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Capacitaciones from './pages/Capacitaciones';
 import ReportesPage from "./pages/ReportesPage";
+import Reclamos from "./pages/Reclamos";
+import ReporteReclamos from "./pages/ReporteReclamos";
 
 function App() {
   return (
@@ -14,6 +16,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/capacitaciones" element={<Capacitaciones />} />
         <Route path="/reportes" element={<ReportesPage />} />
+        <Route path="/reclamos" element={<Reclamos />} /> 
+        <Route path="/reporte-reclamos" element={<ReporteReclamos />} />
+
       </Routes>
 
       <Footer />
