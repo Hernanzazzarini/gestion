@@ -37,6 +37,21 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Card para Proveedores */}
+        <div className="col-md-4 mb-4">
+          <div className="card shadow-sm text-center h-100">
+            <div className="card-body d-flex flex-column justify-content-center">
+              <h5 className="card-title mb-3">Proveedores</h5>
+              <p className="card-text">
+                Gestiona proveedores de servicios e insumos, con sus documentos y vencimientos.
+              </p>
+              <Link to="/proveedores" className="btn btn-success mt-auto">
+                Ir a Proveedores
+              </Link>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
