@@ -38,6 +38,12 @@ export default function Navbar() {
                 Reclamos
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/Proveedores">
+                Proveedores
+              </Link>
+            </li>
+
 
           </ul>
         </div>
