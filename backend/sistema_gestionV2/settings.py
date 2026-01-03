@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',  
     'appreclamos',
     'appproveedores',
+    'appcrontareas',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
