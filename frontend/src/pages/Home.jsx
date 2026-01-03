@@ -52,6 +52,21 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Card para Cronograma de Tareas */}
+        <div className="col-md-4 mb-4">
+          <div className="card shadow-sm text-center h-100">
+            <div className="card-body d-flex flex-column justify-content-center">
+              <h5 className="card-title mb-3">Cronograma de Tareas</h5>
+              <p className="card-text">
+                Accede al módulo de cronograma para ver, asignar y gestionar tareas de los operarios.
+              </p>
+              <Link to="/cronograma-tareas" className="btn btn-info mt-auto">
+                Ir a Cronograma
+              </Link>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
