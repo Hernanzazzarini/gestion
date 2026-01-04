@@ -1,4 +1,3 @@
-// src/pages/Cronograma.jsx
 import { useEffect, useState } from "react";
 import { obtenerOperarios, obtenerTareas, crearTarea, actualizarTarea } from "../services/cronogramaService";
 
@@ -28,7 +27,6 @@ export default function Cronograma() {
   };
 
   const hoy = new Date();
-
   const diasHastaVencimiento = (fechaLimite) => {
     const limite = new Date(fechaLimite);
     const diff = limite - hoy;
@@ -52,31 +50,8 @@ export default function Cronograma() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Usamos FormData para poder subir archivos junto con los demás campos
-    const formData = new FormData();
-    formData.append("responsable_id", form.responsable_id);
-    formData.append("tarea_asignada", form.tarea_asignada);
-    formData.append("fecha_ejecucion", form.fecha_ejecucion);
-    formData.append("fecha_limite", form.fecha_limite);
-    formData.append("fecha_finalizacion", form.fecha_finalizacion || "");
-    formData.append("estado", form.estado);
-    formData.append("observaciones", form.observaciones);
-
-    if (form.archivos.length > 0) {
-      Array.from(form.archivos).forEach(file => {
-        formData.append("archivos", file);
-      });
-    }
-
     try {
-      const res = await fetch("http://localhost:8000/api/tareas/", {
-        method: "POST",
-        body: formData
-      });
-
-      if (!res.ok) throw new Error("Error al crear tarea");
-
+      await crearTarea(form);
       await cargarDatos();
       e.target.reset();
       setForm({
@@ -96,13 +71,17 @@ export default function Cronograma() {
 
   const handleEditarSubmit = async (e) => {
     e.preventDefault();
-    await actualizarTarea(tareaEditar.id, {
-      estado: tareaEditar.estado,
-      fecha_finalizacion: tareaEditar.fecha_finalizacion,
-      observaciones: tareaEditar.observaciones
-    });
-    setTareaEditar(null);
-    cargarDatos();
+    try {
+      await actualizarTarea(tareaEditar.id, {
+        estado: tareaEditar.estado,
+        fecha_finalizacion: tareaEditar.fecha_finalizacion,
+        observaciones: tareaEditar.observaciones
+      });
+      setTareaEditar(null);
+      cargarDatos();
+    } catch (err) {
+      alert(err.message);
+    }
   };
 
   const tareasFiltradas = filtroResponsable

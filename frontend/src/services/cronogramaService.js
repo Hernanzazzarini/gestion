@@ -1,4 +1,3 @@
-// src/services/cronogramaService.js
 const API_URL = "http://localhost:8000/api";
 
 export async function obtenerOperarios() {
@@ -13,13 +12,33 @@ export async function obtenerTareas() {
   return await res.json();
 }
 
+// Crear tarea + subir archivos si existen
 export async function crearTarea(data) {
+  const formData = new FormData();
+  formData.append("responsable_id", data.responsable_id);
+  formData.append("tarea_asignada", data.tarea_asignada);
+  formData.append("fecha_ejecucion", data.fecha_ejecucion);
+  formData.append("fecha_limite", data.fecha_limite);
+  formData.append("fecha_finalizacion", data.fecha_finalizacion || "");
+  formData.append("estado", data.estado);
+  formData.append("observaciones", data.observaciones);
+
+  if (data.archivos && data.archivos.length > 0) {
+    Array.from(data.archivos).forEach(file => {
+      formData.append("archivos", file);
+    });
+  }
+
   const res = await fetch(`${API_URL}/tareas/`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
+    body: formData
   });
-  if (!res.ok) throw new Error("Error al crear tarea");
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(`Error al crear tarea: ${JSON.stringify(errorData)}`);
+  }
+
   return await res.json();
 }
 
@@ -32,17 +51,3 @@ export async function actualizarTarea(id, data) {
   if (!res.ok) throw new Error("Error al actualizar tarea");
   return await res.json();
 }
-
-export async function subirArchivos(tareaId, archivos) {
-  const formData = new FormData();
-  for (let i = 0; i < archivos.length; i++) {
-    formData.append("archivos", archivos[i]);
-  }
-  const res = await fetch(`${API_URL}/tareas/${tareaId}/archivos/`, {
-    method: "POST",
-    body: formData
-  });
-  if (!res.ok) throw new Error("Error al subir archivos");
-  return await res.json();
-}
-
