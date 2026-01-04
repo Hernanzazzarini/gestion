@@ -1,3 +1,4 @@
+// frontend/src/pages/Home.jsx
 import { Link } from "react-router-dom";
 
 export default function Home() {
@@ -60,7 +61,7 @@ export default function Home() {
               <p className="card-text">
                 Accede al módulo de cronograma para ver, asignar y gestionar tareas de los operarios.
               </p>
-              <Link to="/cronograma-tareas" className="btn btn-info mt-auto">
+              <Link to="/cronograma" className="btn btn-info mt-auto">
                 Ir a Cronograma
               </Link>
             </div>
@@ -71,4 +72,3 @@ export default function Home() {
     </div>
   );
 }
-

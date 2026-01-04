@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',  
     'appreclamos',
     'appproveedores',
+    'app_crontareas',
 
 ]
 REST_FRAMEWORK = {

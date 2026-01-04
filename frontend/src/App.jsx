@@ -7,6 +7,7 @@ import ReportesPage from "./pages/ReportesPage";
 import Reclamos from "./pages/Reclamos";
 import ReporteReclamos from "./pages/ReporteReclamos";
 import Proveedores from "./pages/Proveedores";
+import Cronograma from "./pages/cronograma";
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/reclamos" element={<Reclamos />} /> 
         <Route path="/reporte-reclamos" element={<ReporteReclamos />} />
         <Route path="/proveedores" element={<Proveedores />} />
+        <Route path="/cronograma" element={<Cronograma />} />
        
 
       </Routes>
