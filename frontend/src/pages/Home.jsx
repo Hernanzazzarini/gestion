@@ -112,7 +112,7 @@ export default function Home() {
       <footer className="bg-light py-3 border-top">
         <div className="container text-center text-muted">
           <small>
-            © {new Date().getFullYear()} Sistema Gestión V2 · Desarrollado con React & Django
+            © {new Date().getFullYear()} Sistema Gestión Para Empresas.
           </small>
         </div>
       </footer>
