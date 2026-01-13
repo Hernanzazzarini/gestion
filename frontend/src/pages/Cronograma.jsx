@@ -1,3 +1,4 @@
+// src/pages/Cronograma.jsx
 import { useEffect, useState } from "react";
 import { obtenerOperarios, obtenerTareas, crearTarea, actualizarTarea } from "../services/cronogramaService";
 

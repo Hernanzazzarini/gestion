@@ -43,6 +43,11 @@ export default function Navbar() {
                 Proveedores
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/Cronograma">
+                Cronograma
+              </Link>
+            </li>
 
 
           </ul>
